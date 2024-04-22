@@ -7,4 +7,6 @@ router.get("/", PageController.getİndexPage);
 
 router.get("/about", PageController.getAboutPage);
 
+router.get("/register", PageController.getRegisterPage);
+
 export default router;
