@@ -1,6 +1,6 @@
 import User from "../model/UserModel.js";
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken"; // Değişiklik burada
+import jwt from "jsonwebtoken";
 
 const CreateUser = async (req, res) => {
   try {
@@ -33,11 +33,12 @@ const loginUser = async (req, res) => {
     }
 
     if (same) {
-      res.status(200).json({
-        message: "logged in successfully  ",
-        user: user,
-        token: createToken(user._id),
+      const token = createToken(user._id);
+      res.cookie("jwt", token, {
+        httpOnly: true,
+        maxAge: 1000 * 60 * 60 * 24,
       });
+      res.redirect("/users/dashboard");
     } else {
       res.status(401).json({
         status: "false",
@@ -56,4 +57,11 @@ const createToken = (userId) => {
   return jwt.sign({ userId }, process.env.JWT_SECRET, { expiresIn: "1d" });
 };
 
-export { CreateUser, loginUser };
+
+const getDashboardPage = (req, res) => {
+  res.render("dashboard", {
+    link: "Dashboard",
+  });
+};
+
+export { CreateUser, loginUser,getDashboardPage };

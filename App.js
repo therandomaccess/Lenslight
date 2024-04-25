@@ -4,6 +4,7 @@ import conn from "./db.js";
 import PageRouter from "./routers/PageRouter.js";
 import PhotoRouter from "./routers/PhotoRouter.js";
 import UserRouter from "./routers/UserRouter.js";
+import cookieParser from "cookie-parser";
 
 dotenv.config();
 
@@ -13,6 +14,7 @@ const app = express();
 app.use(express.static("public"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 app.set("view engine", "ejs");
 
 app.use("/", PageRouter);

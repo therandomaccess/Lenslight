@@ -1,10 +1,10 @@
 import express from "express";
 import * as PageController from "../controller/PageController.js"; 
-import * as authMiddleware from "../middlewares/authMiddleware.js";
+
 
 const router = express.Router(); 
 
-router.get("/", authMiddleware.authenticateToken, PageController.getİndexPage); 
+router.get("/", PageController.getİndexPage); 
 
 router.get("/about", PageController.getAboutPage);
 

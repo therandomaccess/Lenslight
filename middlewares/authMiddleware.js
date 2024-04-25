@@ -1,26 +1,25 @@
 import User from "../model/UserModel.js";
+import jwt from "jsonwebtoken";
 
 const authenticateToken = async (req, res, next) => {
   try {
-    const token =
-      req.headers["authorization"] &&
-      req.headers["authorization"].split(" ")[1];
+    const token = req.cookies.jwt;
 
-    if (!token) {
-      return res.status(401).json({
-        succeded: false,
-        error: "no token available",
+    if (token) {
+      jwt.verify(token, process.env.JWT_SECRET, (err) => {
+        if (err) {
+          console.log(err);
+          res.redirect("/login");
+        } else {
+          next();
+        }
       });
+    } else {
+      res.redirect("/login");
     }
-
-    req.user = await User.findById(
-      jwt.verify(token, process.env.JWT_SECRET).userId
-    );
-
-    next();
   } catch (error) {
     res.status(401).json({
-      error: error + "not authenticated",
+      error: error + " not authenticated",
     });
   }
 };
