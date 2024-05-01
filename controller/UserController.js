@@ -5,10 +5,7 @@ import jwt from "jsonwebtoken";
 const CreateUser = async (req, res) => {
   try {
     const user = await User.create(req.body);
-    res.status(201).json({
-      succeded: true,
-      user,
-    });
+    res.redirect("/login");
   } catch (error) {
     console.log(req.body);
     res.status(500).json({
@@ -57,11 +54,10 @@ const createToken = (userId) => {
   return jwt.sign({ userId }, process.env.JWT_SECRET, { expiresIn: "1d" });
 };
 
-
 const getDashboardPage = (req, res) => {
   res.render("dashboard", {
     link: "Dashboard",
   });
 };
 
-export { CreateUser, loginUser,getDashboardPage };
+export { CreateUser, loginUser, getDashboardPage };
